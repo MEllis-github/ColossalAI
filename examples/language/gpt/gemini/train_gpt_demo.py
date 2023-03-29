@@ -65,6 +65,18 @@ def parse_args():
         default=10,
         help="training iterations for test",
     )
+    parser.add_argument(
+        "--pytorch_profile",
+        type=bool,
+        default=false,
+        help="enable pytorch profiling"
+    )
+    parser.output_dir(
+        "--output_dir",
+        type=string,
+        default="",
+        help="location to write output files e.g. pytorch profiles if --pytorch_profile=true"
+    )
 
     args = parser.parse_args()
     return args
@@ -202,7 +214,9 @@ def main():
     WARMUP_STEPS = 1
     assert WARMUP_STEPS < NUM_STEPS, "warmup steps should smaller than the total steps"
     assert (NUM_STEPS - WARMUP_STEPS) % 2 == 1, "the number of valid steps should be odd to take the median"
-    PROF_FLAG = False    # The flag of profiling, False by default
+    PROF_FLAG = args.pytorch_profile #False    # The flag of profiling, False by default
+
+    output_dir = args.output_dir #TODO check validity...
 
     disable_existing_loggers()
     colossalai.launch_from_torch(config={})
@@ -333,10 +347,11 @@ def main():
         if n >= WARMUP_STEPS:
             tflops_list.append(step_tflops)
 
+    save_dir = f"{output_dir}/profile/{get_time_stamp()}-demo"
     demo_profiler = get_profile_context(PROF_FLAG,
                                         WARMUP_STEPS,
                                         NUM_STEPS - WARMUP_STEPS,
-                                        save_dir=f"profile/{get_time_stamp()}-demo")
+                                        save_dir=save_dir)
 
     with demo_profiler as prof:
         for n in range(NUM_STEPS):
