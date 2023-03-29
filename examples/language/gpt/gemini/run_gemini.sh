@@ -18,7 +18,9 @@ else
   USE_SHARD_INIT=""
 fi
 
-mkdir -p gemini_logs
+PYTORCH_PROFILE=${PYTORCH_PROFILE:-1}
+OUTPUT_DIR=${OUTPUT_DIR:-"gemini_logs"}
+mkdir -p ${OUTPUT_DIR}
 
 torchrun --standalone --nproc_per_node=${GPUNUM} ./train_gpt_demo.py \
 --tp_degree=${TPDEGREE} \
@@ -28,4 +30,6 @@ torchrun --standalone --nproc_per_node=${GPUNUM} ./train_gpt_demo.py \
 ${USE_SHARD_INIT} \
 --distplan=${DISTPLAN} \
 --train_step=${TRAIN_STEP} \
-2>&1 | tee ./gemini_logs/${MODEL_TYPE}_${DISTPLAN}_gpu_${GPUNUM}_bs_${BATCH_SIZE}_tp_${TPDEGREE}_${PLACEMENT}.log
+--pytorch_profile=${PYTORCH_PROFILE} \
+--output_dir=${OUTPUT_DIR} \
+2>&1 | tee ${OUTPUT_DIR}/${MODEL_TYPE}_${DISTPLAN}_gpu_${GPUNUM}_bs_${BATCH_SIZE}_tp_${TPDEGREE}_${PLACEMENT}${USE_SHARD_INIT}.log
