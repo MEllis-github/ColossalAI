@@ -71,7 +71,7 @@ def parse_args():
         default=False,
         help="enable pytorch profiling"
     )
-    parser.output_dir(
+    parser.add_argument(
         "--output_dir",
         type=string,
         default="",
