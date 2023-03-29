@@ -61,6 +61,21 @@ def gpt2_40b(checkpoint=True):
     return GPTLMModel(hidden_size=8192, num_layers=50, num_attention_heads=16, checkpoint=checkpoint)
 
 
+# https://github.com/Tencent/PatrickStar/blob/0539e41e2b253124c2a6fca6e0fee3f4ba020c5c/examples/model_builder.py#L158-L162
+def gpt2_50b(checkpoint=True):
+    return GPTLMModel(hidden_size=8192, num_layers=62, num_attention_heads=16, checkpoint=checkpoint)
+
+
+# https://github.com/Tencent/PatrickStar/blob/0539e41e2b253124c2a6fca6e0fee3f4ba020c5c/examples/model_builder.py#L163-L167
+def gpt2_60b(checkpoint=True):
+    return GPTLMModel(hidden_size=8192, num_layers=75, num_attention_heads=16, checkpoint=checkpoint)
+
+
+# https://github.com/Tencent/PatrickStar/blob/0539e41e2b253124c2a6fca6e0fee3f4ba020c5c/examples/model_builder.py#L168-L172
+def gpt2_68b(checkpoint=True):
+    return GPTLMModel(hidden_size=9216, num_layers=66, num_attention_heads=16, checkpoint=checkpoint)
+
+
 def model_builder(model_size: str) -> callable:
     if model_size == "gpt2_medium":
         return gpt2_medium
@@ -78,6 +93,12 @@ def model_builder(model_size: str) -> callable:
         return gpt2_30b
     elif model_size == "gpt2_40b":
         return gpt2_40b
+    elif model_size == "gpt2_50b":
+        return gpt2_50b
+    elif model_size == "gpt2_60b":
+        return gpt2_60b
+    elif model_size == "gpt2_68b":
+        return gpt2_68b
     else:
         raise TypeError(f"model_builder {model_size}")
 
