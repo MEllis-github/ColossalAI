@@ -73,7 +73,7 @@ def parse_args():
     )
     parser.add_argument(
         "--output_dir",
-        type=string,
+        type=str,
         default="",
         help="location to write output files e.g. pytorch profiles if --pytorch_profile=true"
     )
