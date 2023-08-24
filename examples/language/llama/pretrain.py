@@ -28,7 +28,7 @@ from colossalai.nn.lr_scheduler import CosineAnnealingWarmupLR
 from colossalai.nn.optimizer import HybridAdam
 from colossalai.utils import get_current_device
 
-
+# https://huggingface.co/docs/transformers/main/model_doc/llama2#transformers.LlamaConfig
 MODEL_CONFIGS = {
     '7b': LlamaConfig(),
     '13b': LlamaConfig(hidden_size=5120, intermediate_size=13760, num_hidden_layers=40, num_attention_heads=40),
